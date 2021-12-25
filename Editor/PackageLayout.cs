@@ -68,10 +68,7 @@ namespace Nomnom.NewPackageHelper.Editor {
 						switch (extension) {
 							case ".asmdef":
 								string parent = Path.GetFileName(folder);
-								Debug.Log(parent);
-								Debug.Log(folder);
 								string path = $"{folder}/{package.name}.{parent}.asmdef";
-								Debug.Log(path);
 								using (StreamWriter writer = File.CreateText(path)) {
 									JObject asmdefObj = new JObject {
 										["name"] = $"{package.name}.{parent}",
@@ -92,7 +89,6 @@ namespace Nomnom.NewPackageHelper.Editor {
 								}
 								break;
 							case ".md":
-								Debug.Log($"Wanting md at {$"{folder}/{Content}"}");
 								if (Path.GetFileNameWithoutExtension(Content) == "LICENSE" && string.IsNullOrEmpty(package.licensesUrl)) {
 									// aquire license data
 									try {
@@ -122,7 +118,6 @@ namespace Nomnom.NewPackageHelper.Editor {
 					} else {
 						// folder
 						Directory.CreateDirectory($"{folder}/{Content}");
-						Debug.Log($"Wanting folder at {folder}/{Content}");
 					}
 				}
 
