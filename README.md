@@ -1,4 +1,4 @@
-# Regex Rename
+# New Package Helper
 Open the window through `Tools/Nomnom/New Local Package - Packages Folder`
 
 ![Preview](./Assets~/preview.gif)
