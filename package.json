@@ -1,0 +1,21 @@
+{
+  "name": "com.nomnom.new-package-helper",
+  "version": "1.0.0",
+  "displayName": "New Package Helper",
+  "description": "This allows assists in the creation of new packages.",
+  "unity": "2020.3",
+  "unityRelease": "20f1",
+  "keywords": [
+    "new",
+    "create",
+    "package",
+    "nomnom"
+  ],
+  "dependencies": {
+  	"com.unity.nuget.newtonsoft-json": "2.0.0"
+  },
+  "author": {
+    "name": "Andrew Burke"
+  },
+  "type": "library"
+}
