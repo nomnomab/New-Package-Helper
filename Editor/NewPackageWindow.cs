@@ -1,4 +1,5 @@
 ﻿using System.IO;
+using System.Runtime.InteropServices;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UnityEditor;
@@ -117,7 +118,13 @@ namespace Nomnom.NewPackageHelper.Editor {
           EditorGUILayout.EndHorizontal();
           _package.documentationUrl = EditorGUILayout.TextField("Documentation Url", _package.documentationUrl);
           _package.changelogUrl = EditorGUILayout.TextField("Changelog Url", _package.changelogUrl);
-          _package.licensesUrl = EditorGUILayout.TextField("Licenses Url", _package.licensesUrl);
+          _package.licenseType = EditorGUILayout.Popup("License Type*", _package.licenseType, LicenseType.Keys);
+
+          if (_package.licenseType == 1) {
+	          EditorGUI.indentLevel++;
+	          _package.licensesUrl = EditorGUILayout.TextField("Licenses Url", _package.licensesUrl);
+	          EditorGUI.indentLevel--;
+          }
 
           // dependencies
           EditorGUILayout.BeginHorizontal();
@@ -220,13 +227,6 @@ namespace Nomnom.NewPackageHelper.Editor {
 
           // type
           _package.type = EditorGUILayout.Popup("Package Type*", _package.type, PACKAGE_TYPES);
-          GUI.enabled = string.IsNullOrEmpty(_package.licensesUrl);
-          _package.licenseType = EditorGUILayout.Popup("License Type", _package.licenseType, LicenseType.Keys);
-          GUI.enabled = true;
-
-          if (!string.IsNullOrEmpty(_package.licensesUrl)) {
-            EditorGUILayout.HelpBox("LicenseUrl is in use", MessageType.Info);
-          }
         }
         EditorGUILayout.EndVertical();
 
@@ -284,11 +284,15 @@ namespace Nomnom.NewPackageHelper.Editor {
       }
 
       if (_package.licenseType != 0) {
-        if (!string.IsNullOrEmpty(_package.licensesUrl)) {
-          json["licensesUrl"] = _package.licensesUrl;
-        } else {
-          json["licensesUrl"] = $"https://choosealicense.com/licenses/{LicenseType.Cache[LicenseType.Keys[_package.licenseType]]}/";
-        }
+	      if (_package.licenseType == 0) {
+		      // none
+		      json["licensesUrl"] = string.Empty;
+	      } else if (_package.licenseType == 1) {
+		      // prop
+		      json["licensesUrl"] = _package.licensesUrl;
+	      } else {
+		      json["licensesUrl"] = $"https://choosealicense.com/licenses/{LicenseType.Cache[LicenseType.Keys[_package.licenseType]]}/";
+	      }
       }
 
       json["dependencies"] = new JObject();

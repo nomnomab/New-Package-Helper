@@ -3,7 +3,7 @@ using System.Linq;
 
 namespace Nomnom.NewPackageHelper.Editor {
 	internal static class LicenseType {
-		public const string DEFAULT_LICENSE = "MIT";
+		public const string DEFAULT_LICENSE = "None";
 
 		public static Dictionary<string, string> Cache = new Dictionary<string, string> {
       {"None", null},
