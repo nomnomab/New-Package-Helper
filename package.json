@@ -1,6 +1,6 @@
 {
   "name": "com.nomnom.new-package-helper",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "displayName": "New Package Helper",
   "description": "This allows assists in the creation of new packages.",
   "unity": "2020.3",
