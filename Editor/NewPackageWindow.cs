@@ -120,7 +120,7 @@ namespace Nomnom.NewPackageHelper.Editor {
           _package.changelogUrl = EditorGUILayout.TextField("Changelog Url", _package.changelogUrl);
           _package.licenseType = EditorGUILayout.Popup("License Type*", _package.licenseType, LicenseType.Keys);
 
-          if (_package.licenseType == 1) {
+          if (_package.licenseType == 2) {
 	          EditorGUI.indentLevel++;
 	          _package.licensesUrl = EditorGUILayout.TextField("Licenses Url", _package.licensesUrl);
 	          EditorGUI.indentLevel--;
@@ -284,15 +284,12 @@ namespace Nomnom.NewPackageHelper.Editor {
       }
 
       if (_package.licenseType != 0) {
-	      if (_package.licenseType == 0) {
-		      // none
-		      json["licensesUrl"] = string.Empty;
-	      } else if (_package.licenseType == 1) {
-		      // prop
-		      json["licensesUrl"] = _package.licensesUrl;
-	      } else {
-		      json["licensesUrl"] = $"https://choosealicense.com/licenses/{LicenseType.Cache[LicenseType.Keys[_package.licenseType]]}/";
-	      }
+	      json["licensesUrl"] = _package.licenseType switch {
+		      0 => string.Empty,
+		      1 => "UNLICENSED",
+		      2 => _package.licensesUrl,
+		      _ => $"https://choosealicense.com/licenses/{LicenseType.Cache[LicenseType.Keys[_package.licenseType]]}/"
+	      };
       }
 
       json["dependencies"] = new JObject();
