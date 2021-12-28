@@ -1,7 +1,8 @@
 # New Package Helper
 Open the window through `Tools/Nomnom/New Local Package - Packages Folder`
 
-![Preview](./Assets~/preview.gif)
+![Package Info](./Assets~/0.png)
+![Package Layout](./Assets~/1.png)
 
 ## Installation
 - OpenUPM
