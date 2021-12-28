@@ -317,6 +317,7 @@ namespace Nomnom.NewPackageHelper.Editor {
       authorObj["url"] = _package.author.url;
 
       json["author"] = authorObj;
+      json["type"] = PACKAGE_TYPES[_package.type];
 
       return json;
     }
