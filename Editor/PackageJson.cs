@@ -44,7 +44,8 @@ namespace Nomnom.NewPackageHelper.Editor {
 					url = string.Empty
 				},
 				type = 4,
-				licenseType = LicenseType.IndexOf(LicenseType.DEFAULT_LICENSE)
+				licenseType = LicenseType.IndexOf(LicenseType.DEFAULT_LICENSE),
+        licensesUrl = "LICENSE.md"
 			};
 		}
 	}

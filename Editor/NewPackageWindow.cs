@@ -80,146 +80,162 @@ namespace Nomnom.NewPackageHelper.Editor {
 		}
 
 		private void DrawPackageEditor() {
-			string path = Path.Combine(Application.dataPath, $"../Packages/{_package.name}");
-			bool nameAlreadyExists = Directory.Exists(path);
-			bool validName = !string.IsNullOrEmpty(_package.name) && !nameAlreadyExists;
-			bool validVersion = !string.IsNullOrEmpty(_package.version);
-			bool validDisplayName = !string.IsNullOrEmpty(_package.displayName);
-			bool validUnityVersion = !string.IsNullOrEmpty(_package.unity);
-			bool validUnityRelease = !string.IsNullOrEmpty(_package.unityRelease);
+      EditorGUILayout.BeginHorizontal();
+      {
+        EditorGUILayout.BeginVertical();
+        {
+          string path = Path.Combine(Application.dataPath, $"../Packages/{_package.name}");
+          bool nameAlreadyExists = Directory.Exists(path);
+          bool validName = !string.IsNullOrEmpty(_package.name) && !nameAlreadyExists;
+          bool validVersion = !string.IsNullOrEmpty(_package.version);
+          bool validDisplayName = !string.IsNullOrEmpty(_package.displayName);
+          bool validUnityVersion = !string.IsNullOrEmpty(_package.unity);
+          bool validUnityRelease = !string.IsNullOrEmpty(_package.unityRelease);
 
-			EditorGUILayout.HelpBox("Anything unfilled will be ignored", MessageType.Info);
+          EditorGUILayout.HelpBox("Anything unfilled will be ignored", MessageType.Info);
 
-			if (nameAlreadyExists) {
-				EditorGUILayout.HelpBox("This package seems to already exist in the Packages folder", MessageType.Error);
-			}
-			GUI.color = !validName ? Color.red : Color.white;
-			_package.name = EditorGUILayout.TextField("Name*", _package.name);
-			GUI.color = !validVersion ? Color.red : Color.white;
-			_package.version = EditorGUILayout.TextField("Version*", _package.version);
-			GUI.color = !validDisplayName ? Color.red : Color.white;
-			_package.displayName = EditorGUILayout.TextField("DisplayName*", _package.displayName);
-			GUI.color = Color.white;
-			EditorGUILayout.PrefixLabel("Description");
-			_package.description = EditorGUILayout.TextArea(_package.description);
-			EditorGUILayout.BeginHorizontal();
-			{
-				GUI.color = !validUnityVersion ? Color.red : Color.white;
-				_package.unity = EditorGUILayout.TextField("Unity Version*", _package.unity);
-				GUI.color = !validUnityRelease ? Color.red : Color.white;
-				_package.unityRelease = EditorGUILayout.TextField(_package.unityRelease);
-				GUI.color = Color.white;
-			}
-			EditorGUILayout.EndHorizontal();
-			_package.documentationUrl = EditorGUILayout.TextField("Documentation Url", _package.documentationUrl);
-			_package.changelogUrl = EditorGUILayout.TextField("Changelog Url", _package.changelogUrl);
-			_package.licensesUrl = EditorGUILayout.TextField("Licenses Url", _package.licensesUrl);
-			
-			// dependencies
-			EditorGUILayout.BeginHorizontal();
-			{
-				EditorGUILayout.LabelField("Dependencies", GUILayout.ExpandWidth(true));
-				if (GUILayout.Button("+", GUILayout.Width(20))) {
-					_package.dependencies.Add(new PackageDependency {
-						key = "com.company.name",
-						value = "1.0.0"
-					});
-				}
-			}
-			EditorGUILayout.EndHorizontal();
-			
-			if (_package.dependencies.Count != 0) {
-				EditorGUILayout.BeginHorizontal(GUILayout.Height(18 * _package.dependencies.Count), GUILayout.ExpandHeight(false));
-				GUILayout.Space(4);
-				EditorGUILayout.BeginVertical("Box");
-				{
-					for (int i = 0; i < _package.dependencies.Count; i++) {
-						var dependency = _package.dependencies[i];
-						EditorGUILayout.BeginHorizontal();
-						{
-							dependency.key = EditorGUILayout.TextField(dependency.key);
-							dependency.value = EditorGUILayout.TextField(dependency.value);
+          if (nameAlreadyExists) {
+            EditorGUILayout.HelpBox("This package seems to already exist in the Packages folder", MessageType.Error);
+          }
+          GUI.color = !validName ? Color.red : Color.white;
+          _package.name = EditorGUILayout.TextField("Name*", _package.name);
+          GUI.color = !validVersion ? Color.red : Color.white;
+          _package.version = EditorGUILayout.TextField("Version*", _package.version);
+          GUI.color = !validDisplayName ? Color.red : Color.white;
+          _package.displayName = EditorGUILayout.TextField("DisplayName*", _package.displayName);
+          GUI.color = Color.white;
+          EditorGUILayout.PrefixLabel("Description");
+          _package.description = EditorGUILayout.TextArea(_package.description);
+          EditorGUILayout.BeginHorizontal();
+          {
+            GUI.color = !validUnityVersion ? Color.red : Color.white;
+            _package.unity = EditorGUILayout.TextField("Unity Version*", _package.unity);
+            GUI.color = !validUnityRelease ? Color.red : Color.white;
+            _package.unityRelease = EditorGUILayout.TextField(_package.unityRelease);
+            GUI.color = Color.white;
+          }
+          EditorGUILayout.EndHorizontal();
+          _package.documentationUrl = EditorGUILayout.TextField("Documentation Url", _package.documentationUrl);
+          _package.changelogUrl = EditorGUILayout.TextField("Changelog Url", _package.changelogUrl);
+          _package.licensesUrl = EditorGUILayout.TextField("Licenses Url", _package.licensesUrl);
 
-							GUI.backgroundColor = Color.red;
-							if (GUILayout.Button("x", GUILayout.Width(20))) {
-								_package.dependencies.RemoveAt(i);
-								break;
-							}
-							GUI.backgroundColor = Color.white;
-						}
-						EditorGUILayout.EndHorizontal();
+          // dependencies
+          EditorGUILayout.BeginHorizontal();
+          {
+            EditorGUILayout.LabelField("Dependencies", GUILayout.ExpandWidth(true));
+            if (GUILayout.Button("+", GUILayout.Width(20))) {
+              _package.dependencies.Add(new PackageDependency {
+                key = "com.company.name",
+                value = "1.0.0"
+              });
+            }
+          }
+          EditorGUILayout.EndHorizontal();
 
-						_package.dependencies[i] = dependency;
-					}
-				}
-				EditorGUILayout.EndVertical();
-				GUILayout.Space(4);
-				EditorGUILayout.EndHorizontal();
-			}
-			
-			// keywords
-			EditorGUILayout.BeginHorizontal();
-			{
-				EditorGUILayout.LabelField("Keywords", GUILayout.ExpandWidth(true));
-				if (GUILayout.Button("+", GUILayout.Width(20))) {
-					_package.keywords.Add("");
-				}
-			}
-			EditorGUILayout.EndHorizontal();
-			
-			if (_package.keywords.Count != 0) {
-				EditorGUILayout.BeginHorizontal(GUILayout.Height(18 * _package.dependencies.Count), GUILayout.ExpandHeight(false));
-				{
-					GUILayout.Space(4);
-					EditorGUILayout.BeginVertical("Box");
-					{
-						for (int i = 0; i < _package.keywords.Count; i++) {
-							var keyword = _package.keywords[i];
-							EditorGUILayout.BeginHorizontal();
-							{
-								keyword = EditorGUILayout.TextField(keyword);
+          if (_package.dependencies.Count != 0) {
+            EditorGUILayout.BeginHorizontal(GUILayout.Height(18 * _package.dependencies.Count), GUILayout.ExpandHeight(false));
+            GUILayout.Space(4);
+            EditorGUILayout.BeginVertical("Box");
+            {
+              for (int i = 0; i < _package.dependencies.Count; i++) {
+                var dependency = _package.dependencies[i];
+                EditorGUILayout.BeginHorizontal();
+                {
+                  dependency.key = EditorGUILayout.TextField(dependency.key);
+                  dependency.value = EditorGUILayout.TextField(dependency.value);
 
-								GUI.backgroundColor = Color.red;
-								if (GUILayout.Button("x", GUILayout.Width(20))) {
-									_package.keywords.RemoveAt(i);
-									break;
-								}
+                  GUI.backgroundColor = Color.red;
+                  if (GUILayout.Button("x", GUILayout.Width(20))) {
+                    _package.dependencies.RemoveAt(i);
+                    break;
+                  }
+                  GUI.backgroundColor = Color.white;
+                }
+                EditorGUILayout.EndHorizontal();
 
-								GUI.backgroundColor = Color.white;
-							}
-							EditorGUILayout.EndHorizontal();
+                _package.dependencies[i] = dependency;
+              }
+            }
+            EditorGUILayout.EndVertical();
+            GUILayout.Space(4);
+            EditorGUILayout.EndHorizontal();
+          }
 
-							_package.keywords[i] = keyword;
-						}
-					}
-					EditorGUILayout.EndVertical();
-					GUILayout.Space(4);
-				}
-				EditorGUILayout.EndHorizontal();
-			}
+          // keywords
+          EditorGUILayout.BeginHorizontal();
+          {
+            EditorGUILayout.LabelField("Keywords", GUILayout.ExpandWidth(true));
+            if (GUILayout.Button("+", GUILayout.Width(20))) {
+              _package.keywords.Add("");
+            }
+          }
+          EditorGUILayout.EndHorizontal();
 
-			// author
-			EditorGUILayout.PrefixLabel("Author");
-			EditorGUILayout.BeginHorizontal();
-			{
-				GUILayout.Space(4);
-				EditorGUILayout.BeginVertical("Wizard Box", GUILayout.Height(18 * 3));
-				{
-					_package.author.name = EditorGUILayout.TextField("Name", _package.author.name);
-					_package.author.email = EditorGUILayout.TextField("Email", _package.author.email);
-					_package.author.url = EditorGUILayout.TextField("Url", _package.author.url);
-				}
-				EditorGUILayout.EndVertical();
-				GUILayout.Space(4);
-			}
-			EditorGUILayout.EndHorizontal();
-			
-			// type
-			_package.type = EditorGUILayout.Popup("Package Type*", _package.type, PACKAGE_TYPES);
-			GUI.enabled = string.IsNullOrEmpty(_package.licensesUrl);
-			_package.licenseType = EditorGUILayout.Popup("License Type", _package.licenseType, LicenseType.Keys);
-			GUI.enabled = true;
-		}
+          if (_package.keywords.Count != 0) {
+            EditorGUILayout.BeginHorizontal(GUILayout.Height(18 * _package.dependencies.Count), GUILayout.ExpandHeight(false));
+            {
+              GUILayout.Space(4);
+              EditorGUILayout.BeginVertical("Box");
+              {
+                for (int i = 0; i < _package.keywords.Count; i++) {
+                  var keyword = _package.keywords[i];
+                  EditorGUILayout.BeginHorizontal();
+                  {
+                    keyword = EditorGUILayout.TextField(keyword);
+
+                    GUI.backgroundColor = Color.red;
+                    if (GUILayout.Button("x", GUILayout.Width(20))) {
+                      _package.keywords.RemoveAt(i);
+                      break;
+                    }
+
+                    GUI.backgroundColor = Color.white;
+                  }
+                  EditorGUILayout.EndHorizontal();
+
+                  _package.keywords[i] = keyword;
+                }
+              }
+              EditorGUILayout.EndVertical();
+              GUILayout.Space(4);
+            }
+            EditorGUILayout.EndHorizontal();
+          }
+
+          // author
+          EditorGUILayout.PrefixLabel("Author");
+          EditorGUILayout.BeginHorizontal();
+          {
+            GUILayout.Space(4);
+            EditorGUILayout.BeginVertical("Wizard Box", GUILayout.Height(18 * 3));
+            {
+              _package.author.name = EditorGUILayout.TextField("Name", _package.author.name);
+              _package.author.email = EditorGUILayout.TextField("Email", _package.author.email);
+              _package.author.url = EditorGUILayout.TextField("Url", _package.author.url);
+            }
+            EditorGUILayout.EndVertical();
+            GUILayout.Space(4);
+          }
+          EditorGUILayout.EndHorizontal();
+
+          // type
+          _package.type = EditorGUILayout.Popup("Package Type*", _package.type, PACKAGE_TYPES);
+          GUI.enabled = string.IsNullOrEmpty(_package.licensesUrl);
+          _package.licenseType = EditorGUILayout.Popup("License Type", _package.licenseType, LicenseType.Keys);
+          GUI.enabled = true;
+
+          if (!string.IsNullOrEmpty(_package.licensesUrl)) {
+            EditorGUILayout.HelpBox("LicenseUrl is in use", MessageType.Info);
+          }
+        }
+        EditorGUILayout.EndVertical();
+
+        GUI.enabled = false;
+        EditorGUILayout.TextArea(GenerateJson().ToString(Formatting.Indented), GUILayout.Width(Screen.width * 0.35f), GUILayout.Height(Screen.height - 60));
+        GUI.enabled = true;
+      }
+      EditorGUILayout.EndHorizontal();
+    }
 
 		private void DrawStructureEditor() {
 			var root = _layout.Root;
@@ -248,58 +264,70 @@ namespace Nomnom.NewPackageHelper.Editor {
 			}
 		}
 
+    private JObject GenerateJson() {
+      // generate json
+      JObject json = new JObject {
+        ["name"] = _package.name,
+        ["version"] = _package.version,
+        ["displayName"] = _package.displayName,
+        ["description"] = _package.description,
+        ["unity"] = _package.unity,
+        ["unityRelease"] = _package.unityRelease
+      };
+
+      if (!string.IsNullOrEmpty(_package.documentationUrl)) {
+        json["documentationUrl"] = _package.documentationUrl;
+      }
+
+      if (!string.IsNullOrEmpty(_package.changelogUrl)) {
+        json["changelogUrl"] = _package.changelogUrl;
+      }
+
+      if (_package.licenseType != 0) {
+        if (!string.IsNullOrEmpty(_package.licensesUrl)) {
+          json["licensesUrl"] = _package.licensesUrl;
+        } else {
+          json["licensesUrl"] = $"https://choosealicense.com/licenses/{LicenseType.Cache[LicenseType.Keys[_package.licenseType]]}/";
+        }
+      }
+
+      json["dependencies"] = new JObject();
+      json["devDependencies"] = new JObject();
+      json["samples"] = new JArray();
+
+      if (_package.dependencies.Count > 0) {
+        JObject dependencies = new JObject();
+        foreach (PackageDependency dependency in _package.dependencies) {
+          dependencies[dependency.key] = dependency.value;
+        }
+        json["dependencies"] = dependencies;
+      }
+
+      if (_package.keywords.Count > 0) {
+        JArray keywords = new JArray();
+        foreach (string keyword in _package.keywords) {
+          keywords.Add(keyword);
+        }
+        json["keywords"] = keywords;
+      }
+
+      JObject authorObj = new JObject();
+      authorObj["name"] = _package.author.name;
+      authorObj["email"] = _package.author.email;
+      authorObj["url"] = _package.author.url;
+
+      json["author"] = authorObj;
+
+      return json;
+    }
+
 		private void GeneratePackage() {
-			// generate json
-			JObject json = new JObject {
-				["name"] = _package.name,
-				["version"] = _package.version,
-				["displayName"] = _package.displayName,
-				["description"] = _package.description,
-				["unity"] = _package.unity,
-				["unityRelease"] = _package.unityRelease
-			};
+      JObject json = GenerateJson();
 
-			if (!string.IsNullOrEmpty(_package.documentationUrl)) {
-				json["documentationUrl"] = _package.documentationUrl;
-			}
-			
-			if (!string.IsNullOrEmpty(_package.changelogUrl)) {
-				json["changelogUrl"] = _package.changelogUrl;
-			}
-			
-			if (!string.IsNullOrEmpty(_package.licensesUrl)) {
-				json["licensesUrl"] = _package.licensesUrl;
-			} else {
-				json["licensesUrl"] = $"https://choosealicense.com/licenses/{LicenseType.Cache[LicenseType.Keys[_package.licenseType]]}/";
-			}
+      // Debug.Log(json.ToString(Formatting.Indented));
 
-			if (_package.dependencies.Count > 0) {
-				JObject dependencies = new JObject();
-				foreach (PackageDependency dependency in _package.dependencies) {
-					dependencies[dependency.key] = dependency.value;
-				}
-				json["dependencies"] = dependencies;
-			}
-			
-			if (_package.keywords.Count > 0) {
-				JArray keywords = new JArray();
-				foreach (string keyword in _package.keywords) {
-					keywords.Add(keyword);
-				}
-				json["keywords"] = keywords;
-			}
-
-			JObject authorObj = new JObject();
-			authorObj["name"] = _package.author.name;
-			authorObj["email"] = _package.author.email;
-			authorObj["url"] = _package.author.url;
-
-			json["author"] = authorObj;
-			
-			// Debug.Log(json.ToString(Formatting.Indented));
-			
-			// handle file/folder structure
-			string path = Path.Combine(Application.dataPath, $"../Packages/{_package.name}");
+      // handle file/folder structure
+      string path = Path.Combine(Application.dataPath, $"../Packages/{_package.name}");
 			Directory.CreateDirectory(path);
 			_layout.Root.HandleNew(_package, path);
 			

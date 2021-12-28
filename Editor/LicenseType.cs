@@ -6,6 +6,8 @@ namespace Nomnom.NewPackageHelper.Editor {
 		public const string DEFAULT_LICENSE = "MIT";
 
 		public static Dictionary<string, string> Cache = new Dictionary<string, string> {
+      {"None", null},
+      {"Proprietary", null},
 			{"Academic Free License v3.0", "afl-3.0"},
 			{"Apache license 2.0", "apache-2.0"},
 			{"Artistic license 2.0", "artistic-2.0"},

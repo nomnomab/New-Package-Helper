@@ -74,7 +74,11 @@ namespace Nomnom.NewPackageHelper.Editor {
 										["name"] = $"{package.name}.{parent}",
 										["rootNamespace"] = "",
 										["references"] = new JArray(),
-										["includePlatforms"] = new JArray(),
+										["includePlatforms"] = folder.EndsWith("Editor") 
+											? new JArray {
+												"Editor"
+											} 
+											: new JArray(),
 										["excludePlatforms"] = new JArray(),
 										["allowUnsafeCode"] = false,
 										["overrideReferences"] = false,
