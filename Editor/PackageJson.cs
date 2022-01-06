@@ -1,10 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 namespace Nomnom.NewPackageHelper.Editor {
 	[Serializable]
 	internal struct PackageJson {
+		public const string PREFS_AUTHOR = "com.nomnom.new-package-helper-last_author";
+		public const string PREFS_EMAIL = "com.nomnom.new-package-helper-last_email";
+		public const string PREFS_URL = "com.nomnom.new-package-helper-last_url";
+		public const string PREFS_LICENSE = "com.nomnom.new-package-helper-last_license";
+		
 		public string name;
 		public string version;
 		public string displayName;
@@ -39,12 +45,12 @@ namespace Nomnom.NewPackageHelper.Editor {
 				dependencies = new List<PackageDependency>(),
 				keywords = new List<string>(),
 				author = new PackageAuthor {
-					name = "Author",
-					email = string.Empty,
-					url = string.Empty
+					name = EditorPrefs.GetString(PREFS_AUTHOR, "Author"),
+					email = EditorPrefs.GetString(PREFS_EMAIL, string.Empty),
+					url = EditorPrefs.GetString(PREFS_URL, string.Empty)
 				},
 				type = 4,
-				licenseType = LicenseType.IndexOf(LicenseType.DEFAULT_LICENSE),
+				licenseType = EditorPrefs.GetInt(PREFS_LICENSE, LicenseType.IndexOf(LicenseType.DEFAULT_LICENSE)),
         licensesUrl = "LICENSE.md"
 			};
 		}

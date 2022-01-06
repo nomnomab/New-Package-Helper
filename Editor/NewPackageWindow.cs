@@ -334,6 +334,12 @@ namespace Nomnom.NewPackageHelper.Editor {
 			
 			File.WriteAllText($"{path}/package.json", json.ToString(Formatting.Indented));
 			EditorUtility.RevealInFinder(path);
+			
+			// apply new changes
+			EditorPrefs.SetString(PackageJson.PREFS_AUTHOR, _package.author.name);
+			EditorPrefs.SetString(PackageJson.PREFS_EMAIL, _package.author.email);
+			EditorPrefs.SetString(PackageJson.PREFS_URL, _package.author.url);
+			EditorPrefs.SetInt(PackageJson.PREFS_LICENSE, _package.licenseType);
 		}
 	}
 }
