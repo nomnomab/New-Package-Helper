@@ -15,4 +15,3 @@ Open the window through `Tools/Nomnom/New Local Package - Packages Folder`
 
 ## Additional Information
 - Licenses gotten through the `License Type` field are retrieved from https://choosealicense.com. This can go down, or get rejected at any point due to usage without an API.
-- [Trello Board](https://trello.com/b/h7sMCsTR/my-packages)
